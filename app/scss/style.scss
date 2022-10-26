@@ -1,0 +1,94 @@
+@import 'vars';
+@import 'global';
+
+.header {
+  border-bottom: 1px solid #cfcfcf;
+}
+
+.header__inner {
+  min-height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav__list {
+  display: flex;
+  gap: 35px;
+  a {
+    transition: all 0.2s;
+  }
+  a:hover {
+    color: #707070;
+  }
+}
+
+.icons {
+  display: flex;
+  gap: 26px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  &__input {
+    width: 250px;
+    height: 25px;
+    padding: 0 3px 0 5px;
+    position: absolute;
+    right: -5px;
+    bottom: 3px;
+    z-index: 0;
+    border: none;
+    border-bottom: 1px solid #707070;
+    outline: none;
+  }
+  &__icon {
+    z-index: 1;
+    :hover {
+      path {
+        transition: all 0.2s;
+        fill: #707070;
+      }
+    }
+  }
+  &__icon--active {
+    svg {
+      width: 12px;
+    }
+    path {
+      fill: #707070;
+    }
+    :hover {
+      path {
+        fill: #000;
+      }
+    }
+  }
+}
+
+.cart {
+  vertical-align: top;
+  position: relative;
+  span {
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    font-size: 10px;
+    line-height: 13px;
+    text-align: center;
+    color: #fff;
+    border-radius: 50%;
+    background-color: #3366ff;
+    top: -6px;
+    right: -6px;
+  }
+  :hover {
+    path {
+      transition: all 0.2s;
+      fill: #707070;
+    }
+  }
+}
