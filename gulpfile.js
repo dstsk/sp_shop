@@ -4,7 +4,7 @@ let gulp = require('gulp'),
   browserSync = require('browser-sync'),
   autoprefixer = require('gulp-autoprefixer'),
   concat = require('gulp-concat'),
-  // uglify = require('gulp-uglify'),
+  uglify = require('gulp-uglify'),
   cssmin = require('gulp-cssmin')
 
 // prettier-ignore
@@ -18,16 +18,18 @@ gulp.task('sass', function () {
 })
 
 // prettier - ignore
-// gulp.task('script', function () {
-//   return gulp
-//     .src([
-//       'node_modules/jquery/dist/jquery.js',
-//       'node_modules/slick-carousel/slick/slick.js',
-//     ])
-//     .pipe(concat('libs.min.js'))
-//     .pipe(uglify())
-//     .pipe(gulp.dest('app/js'))
-// })
+gulp.task('script', function () {
+  return gulp
+    .src([
+      'node_modules/ismobilejs/dist/isMobile.min.js',
+      'node_modules/imask/dist/imask.min.js',
+      // 'node_modules/inputmask/dist/inputmask.min.js',
+      // 'node_modules/slick-carousel/slick/slick.js',
+    ])
+    .pipe(concat('libs.min.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('app/js'))
+})
 
 // prettier-ignore
 gulp.task('style', function () {
@@ -69,7 +71,7 @@ gulp.task('watch', function () {
 gulp.task(
   'default',
   gulp.parallel('style',
-  //  'script',
+   'script',
     'sass',
      'watch',
       'browser-sync')
