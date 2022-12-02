@@ -5,14 +5,11 @@
 /**========================================================================
  **                          HEADER
  *========================================================================**/
-// .header {
-//   background-color: #fff;
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   z-index: 10;
-// }
+.header {
+  background-color: #fff;
+  z-index: 2;
+  position: relative;
+}
 
 .header__wrapper {
   position: relative;
@@ -51,20 +48,28 @@
   align-items: center;
   gap: 10px;
   position: relative;
+  transition: all 0.2s ease;
   &__input {
-    width: 250px;
+    width: 180px;
     height: 25px;
-    padding: 0 3px 0 5px;
     position: absolute;
     right: -5px;
     bottom: 3px;
     z-index: 0;
+    color: #555770;
     border: none;
-    border-bottom: 1px solid #707070;
     outline: none;
+    border-bottom: 1px solid #c5c5c5;
+    padding: 0 30px 0 5px;
   }
   &__icon {
-    z-index: 1;
+    z-index: 5;
+    width: 22px;
+    height: 25px;
+    svg {
+      transition: all 0.2s;
+      margin-bottom: 2px;
+    }
     :hover {
       path {
         transition: all 0.2s;
@@ -75,6 +80,7 @@
   &__icon--active {
     svg {
       width: 12px;
+      margin-left: 12px;
     }
     path {
       fill: #707070;
@@ -86,10 +92,23 @@
     }
   }
 }
+input.search-form__input {
+  outline: none;
+  opacity: 1;
+  transform: translate(0, 0px);
+  transition: all 0.3s;
+  &--hidden {
+    opacity: 0;
+    transform: translate(-50px, 0px);
+    pointer-events: none;
+    transition: all 0.3s;
+  }
+}
 
 .cart {
   vertical-align: top;
   position: relative;
+  z-index: 9;
   span {
     position: absolute;
     width: 13px;
@@ -156,7 +175,6 @@
   display: flex;
   justify-content: space-between;
   max-width: 1640px;
-  height: 100%;
   margin: 0 auto;
   padding-left: 30px;
   position: relative;
@@ -378,6 +396,8 @@
   &__products {
     padding: 40px;
     border-bottom: 1px solid #cfcfcf;
+    max-height: 512px;
+    overflow-y: auto;
   }
   &__title {
     font-size: 18px;
@@ -429,6 +449,7 @@
 img.products__img {
   width: 100px;
   height: 100px;
+  object-fit: contain;
 }
 button.products__delete {
   margin-left: auto;
@@ -574,22 +595,7 @@ input:not([type='submit']):active + .input-requirements {
     margin: 0 auto;
   }
 }
-@media (max-width: 1199px) {
-  .basket {
-    position: fixed;
-    top: 0;
-    right: 0;
-  }
-  .payment-page__wrapper {
-    justify-content: start;
-    padding-right: 0;
-  }
-  .basket {
-    display: none;
-  }
-  .basket {
-    border-right: none;
-  }
+@media (max-width: 1220px) {
   .pagination {
     &__item--checked + .pagination__item--checked {
       ::after {
@@ -616,10 +622,66 @@ input:not([type='submit']):active + .input-requirements {
     }
   }
 }
-@media (max-width: 999px) {
+@media (max-width: 1199px) {
+  .header {
+    z-index: 2;
+  }
+  .nav {
+    z-index: 2;
+  }
   .logo {
     z-index: 11;
   }
+  .basket {
+    position: fixed;
+    top: 80px;
+    right: -100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    border-left: none;
+    overflow-y: auto;
+    transition: right 0.5s;
+  }
+  .basket.active {
+    right: 0;
+    padding: 80px 0 0;
+    transform: translate(0, -80px);
+    z-index: 1;
+  }
+  .basket__products {
+    border-bottom: none;
+  }
+  .basket__title {
+    margin: 0 auto 30px;
+    max-width: max-content;
+  }
+  .products__item {
+    justify-content: space-between;
+  }
+  button.products__delete {
+    margin-left: 0;
+  }
+  // .basket {
+  //   position: fixed;
+  //   top: 0;
+  //   right: 0;
+  // }
+  // .payment-page__wrapper {
+  //   justify-content: start;
+  //   padding-right: 0;
+  // }
+  // .basket {
+  //   display: none;
+  // }
+  // .basket {
+  //   border-right: none;
+  // }
+}
+@media (max-width: 999px) {
   .burger {
     display: block;
     z-index: 11;
@@ -715,42 +777,49 @@ input:not([type='submit']):active + .input-requirements {
       padding-top: 15px;
     }
   }
-  .basket {
-    position: fixed;
-    top: 80px;
-    right: -100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    width: 100%;
-    height: 100%;
-    background-color: #fff;
-    border-left: none;
-    overflow-y: auto;
-    transition: right 0.5s;
-  }
-  .basket.active {
-    right: 0;
-  }
-  .basket__title {
-    margin: 0 auto 30px;
-    max-width: max-content;
-  }
-  .products__item {
-    justify-content: space-between;
-  }
-  button.products__delete {
-    margin-left: 0;
+  // .basket {
+  //   position: fixed;
+  //   top: 80px;
+  //   right: -100%;
+  //   display: flex;
+  //   flex-direction: row;
+  //   justify-content: space-evenly;
+  //   width: 100%;
+  //   height: 100%;
+  //   background-color: #fff;
+  //   border-left: none;
+  //   overflow-y: auto;
+  //   transition: right 0.5s;
+  // }
+  // .basket.active {
+  //   right: 0;
+  // }
+  // .basket__title {
+  //   margin: 0 auto 30px;
+  //   max-width: max-content;
+  // }
+  // .products__item {
+  //   justify-content: space-between;
+  // }
+  // button.products__delete {
+  //   margin-left: 0;
+  // }
+  .basket__products {
+    border-bottom: none;
   }
 }
 
 @media (max-width: 829px) {
   .basket {
-    flex-direction: column;
-    justify-content: start;
+    display: block;
+    // flex-direction: column;
+    // justify-content: start;
+  }
+  .basket__products {
+    border-bottom: 1px solid #cfcfcf;
   }
   .products__item {
-    margin: 0 auto;
+    margin: 0 auto 20px;
     max-width: 330px;
     // justify-content: center;
   }
@@ -848,31 +917,37 @@ input:not([type='submit']):active + .input-requirements {
   .card-form__checkboxes {
     margin-bottom: 20px;
   }
-  // .pagination {
-  //   &__item--checked + .pagination__item--checked {
-  //     ::after {
-  //       width: 63px;
-  //     }
-  //   }
-  //   &__item--checked {
-  //     ::before {
-  //       width: 60px;
-  //     }
-  //   }
-  //   &__item--active {
-  //     ::before {
-  //       width: 60px;
-  //     }
-  //     ::after {
-  //       width: 60px;
-  //     }
-  //   }
-  //   &__item--unchecked {
-  //     ::after {
-  //       width: 60px;
-  //     }
-  //   }
-  // }
+  .search-form {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 50%;
+    height: 99%;
+    &__input {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      right: 3%;
+      bottom: 0;
+      z-index: 12;
+      border: none;
+      padding: 0 50px 0 5px;
+    }
+    &__icon {
+      position: absolute;
+      right: 134px;
+      z-index: 9;
+    }
+    &__icon--active {
+      position: absolute;
+      right: 40px;
+      bottom: 50%;
+      z-index: 13;
+      width: 22px;
+      height: 25px;
+      transform: translate(0, 50%);
+    }
+  }
 }
 
 @media (max-width: 417px) {

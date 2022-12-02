@@ -56,13 +56,18 @@
           </button>
         </nav>
         <div class="icons">
-          <form class="search-form" action="#" method="get">
+          <form id="search-form" class="search-form" method="get">
             <input
-              class="search-form__input hidden"
+              class="search-form__input search-form__input--hidden"
+              name="search"
               type="search"
               placeholder="type here..."
             />
-            <button class="search-form__icon" href="#" type="submit">
+            <button
+              class="search-form__icon btn-search"
+              type="submit"
+              form="search-form"
+            >
               <svg
                 width="24"
                 height="24"
@@ -90,8 +95,8 @@
                 fill="black"
               />
             </svg>
-            <span>2</span></a
-          >
+            <!-- <span>1</span> -->
+          </a>
           <a class="burger" href="#">
             <span></span>
           </a>
@@ -350,25 +355,44 @@
                   >
                     <div class="payment-form__tile">
                       <div class="payment-form__row paypal-form__email">
-                        <p class="payment-form__title">E-mail</p>
-                        <input
-                          class="payment-form__input input email-input"
-                          type="email"
-                          name="e-mail"
-                          placeholder="Enter email"
-                          required
-                        />
+                        <label
+                          class="paypal-form__email payment-form__label"
+                          for="email"
+                        >
+                          <span class="payment-form__title">E-mail</span>
+
+                          <input
+                            id="email"
+                            class="payment-form__input input email-input"
+                            type="email"
+                            name="e-mail"
+                            placeholder="Enter email"
+                            autocomplete="email"
+                            required
+                          />
+
+                          <ul class="input-requirements"></ul>
+                        </label>
                       </div>
                       <div class="payment-form__row paypal-form__password">
-                        <p class="payment-form__title">Password</p>
-                        <input
-                          class="payment-form__input input password-input"
-                          type="password"
-                          name="password"
-                          placeholder="Enter password"
-                          autocomplete="off"
-                          required
-                        />
+                        <label
+                          class="paypal-form__password payment-form__label"
+                          for="password"
+                        >
+                          <span class="payment-form__title">Password</span>
+
+                          <input
+                            id="email"
+                            class="payment-form__input input password-input"
+                            type="password"
+                            name="password"
+                            placeholder="Enter password"
+                            autocomplete="off"
+                            required
+                          />
+
+                          <ul class="input-requirements"></ul>
+                        </label>
                       </div>
                     </div>
                   </form>
@@ -398,7 +422,7 @@
           <div class="basket__products products">
             <div class="basket__title">My basket</div>
             <ul class="products__list">
-              <li class="products__item">
+              <!-- <li class="products__item">
                 <img
                   class="products__img"
                   src="images/jacket.png"
@@ -518,7 +542,7 @@
                     />
                   </svg>
                 </button>
-              </li>
+              </li> -->
             </ul>
           </div>
           <div class="basket__footer">

@@ -88,6 +88,10 @@ button {
   }
 }
 
+input::-webkit-search-cancel-button {
+  display: none;
+}
+
 input:focus {
   outline: 1px solid #3366ff;
 }
