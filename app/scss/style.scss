@@ -469,6 +469,7 @@ button.products__delete {
 .bill {
   padding: 40px 55px 40px 40px;
   &__row {
+    position: relative;
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
@@ -476,6 +477,16 @@ button.products__delete {
   &__total {
     font-size: 18px;
     font-weight: 700;
+  }
+  &__discount {
+    position: absolute;
+    font-size: 24px;
+    padding: 5px;
+    top: 0;
+    right: 0;
+    background-color: rgb(255, 241, 84);
+    opacity: 0.9;
+    transform: translate(20px, -5px) rotate(10deg);
   }
 }
 

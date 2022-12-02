@@ -374,7 +374,7 @@ body.addEventListener('click', e => {
 })
 
 /**========================================================================
- *                    * Delete products from basket
+ *                  * Shopping basket interaction
  *========================================================================**/
 
 const productBasket = [
@@ -406,66 +406,25 @@ const productBasket = [
     },
   },
 ]
-
-/**========================================================================
- * *
- *========================================================================**/
-
 const productList = document.querySelector('.products__list')
-let deleteProductBtns, productsCounter
+const basketBill = document.querySelector('.basket__bill')
+const promocodeForm = document.querySelector('.promocode-field__form')
+const promocodeInput = document.querySelector('.promocode-field__input')
+const promocodeBtn = document.querySelector('.promocode-field__btn')
 
-const removeProductFromBasket = () => {
-  deleteProductBtns = document.querySelectorAll('.products__delete')
+let total, subtotal, tax, shipping
+let discount = 1
 
-  deleteProductBtns.forEach(btn =>
-    btn.addEventListener('click', function (e) {
-      const removedItem = productBasket.findIndex(
-        p => p.id === +this.dataset.btnId
-      )
-      productBasket.splice(removedItem, 1)
-      renderBasket(productBasket)
-    })
-  )
+// * Получение данных с сервера
+const fetchData = async url => {
+  const res = await fetch(url)
+  return res.json()
 }
 
-// const changeAmountOfProduct = () => {
-//   productsCounter = document.querySelectorAll('.products__delete')
-
-//   deleteProductBtns.forEach(btn =>
-//     btn.addEventListener('click', function (e) {
-//       const removedItem = productBasket.findIndex(
-//         p => p.id === +this.dataset.btnId
-//       )
-//       productBasket.splice(removedItem, 1)
-//       renderBasket(productBasket)
-//     })
-//   )
-// }
-
-const randomInt = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
-
-const fetchData = url => {
-  return fetch(url)
-    .then(res => res.json())
-    .then(data => data)
-    .catch(err => err)
-}
-
-const addProductToBasket = product => {
-  const index = productBasket.findIndex(p => p.id === product.id)
-  if (index >= 0) {
-    productBasket[index].amount++
-  } else {
-    product.amount = 1
-    productBasket.push(product)
-  }
-}
-
-const getHTML = product => {
+// * Получение разметки для продукта в корзине
+const getProductHTML = product => {
   return `
-    <li class="products__item">
+    <li class="products__item" data-product-id="${product.id}">
       <img
         class="products__img"
         src="${product.image}"
@@ -506,7 +465,9 @@ const getHTML = product => {
             </button>
           </div>
 
-          <div class="products__price">$ ${product.price * product.amount}</div>
+          <div class="products__price">$ ${(
+            product.price * product.amount
+          ).toFixed(2)}</div>
         </div>
       </div>
       <button class="products__delete" data-btn-id="${product.id}">
@@ -527,55 +488,209 @@ const getHTML = product => {
   `
 }
 
-const cartCounter = productBasket => {
+// * Получение разметки для счёта
+const getBillHTML = () => {
+  return `
+    <div class="bill__row bill__subtotal">
+      <div class="bill__row-name">Subtotal</div> 
+      <div class="bill__row-price">$${subtotal.toFixed(2)}</div>
+    </div>
+    <div class="bill__row bill__tax">
+      <div class="bill__row-name">Tax</div>
+      <div class="bill__row-price">$${tax.toFixed(2)}</div>
+    </div>
+    <div class="bill__row bill__shipping">
+      <div class="bill__row-name">Shipping</div>
+      <div class="bill__row-price">$${shipping.toFixed(2)}</div>
+    </div>
+    <div class="bill__row bill__total">
+      <div class="bill__row-name">Total</div>
+      <div class="bill__row-price">$${total.toFixed(2)}</div>
+    </div>
+  `
+}
+
+// * Добавление продукта в корзину
+const addProductToBasket = product => {
+  //  Если продукт уже есть в корзине, то увеличиваем его количество
+  //  Если нет, то добавляем в корзину с полем amount = 1
+  const index = productBasket.findIndex(p => p.id === product.id)
+  if (index >= 0) {
+    productBasket[index].amount++
+  } else {
+    product.amount = 1
+    productBasket.push(product)
+  }
+
+  //  Обновляем корзину
+  updateBasket()
+}
+
+// * Удаление продукта из корзины
+const removeProductFromBasket = () => {
+  //  Инициализируем кнопки удаления продуктов
+  const removeProductBtns = document.querySelectorAll('.products__delete')
+
+  removeProductBtns.forEach(btn =>
+    btn.addEventListener('click', function (e) {
+      // Определяем id удаляемого продукта
+      const removedProductId =
+        +e.target.closest('.products__item').dataset.productId
+
+      // Определяем индекс удаляемого продукта в productBasket
+      const productIndexInBasket = productBasket.findIndex(
+        p => p.id === removedProductId
+      )
+
+      // Удаляем продукт из корзины
+      productBasket.splice(productIndexInBasket, 1)
+
+      // Обновляем корзину
+      updateBasket()
+    })
+  )
+}
+
+// * Изменение количества продуктов по кнопкам + / -
+const changeAmountOfProduct = () => {
+  //  Инициализируем кнопки + / -
+  const productCounters = document.querySelectorAll('.products__counter')
+
+  productCounters.forEach(el =>
+    el.addEventListener('click', e => {
+      const substractBtn = e.target.closest('.products__substract')
+      const addBtn = e.target.closest('.products__add')
+
+      // Определяем id продукта
+      const clickedProductId =
+        +e.target.closest('.products__item').dataset.productId
+
+      // Определяем индекс продукта в productBasket
+      const productIndexInBasket = productBasket.findIndex(
+        p => p.id === clickedProductId
+      )
+
+      // Если - , то убавляем на 1
+      if (substractBtn) {
+        productBasket[productIndexInBasket].amount--
+        // Если 0 , то удаляем
+        if (productBasket[productIndexInBasket].amount < 1)
+          productBasket.splice(productIndexInBasket, 1)
+      }
+      // Если + , то прибавляем на 1
+      if (addBtn) {
+        productBasket[productIndexInBasket].amount++
+      }
+
+      // Обновляем корзину
+      updateBasket()
+    })
+  )
+}
+
+// * Обновляем счёт
+const updateBasketBill = () => {
+  const basketIsEmpty = !productBasket.length
+
+  // Если корзина пустая
+  if (basketIsEmpty) {
+    subtotal = 0
+    tax = 0
+    shipping = 0
+    total = 0
+  }
+
+  // Если в корзине что-то есть
+  if (!basketIsEmpty) {
+    subtotal = productBasket
+      .map(p => p.price * p.amount)
+      .reduce((p, c) => p + c)
+    tax = productBasket.map(p => p.amount).reduce((p, c) => p + c) * 50
+    shipping = 150
+    total = (subtotal + tax + shipping) * discount
+  }
+
+  basketBill.innerHTML = ''
+  basketBill.insertAdjacentHTML('beforeend', getBillHTML())
+}
+
+// * Обновляем счётчик товаров в корзине на иконке в хедере
+const cartCounterUpdate = () => {
+  // Определяем сумарное количество товаров в корзине
   const amount = productBasket.length
     ? productBasket.map(el => el.amount).reduce((p, c) => p + c)
     : 0
 
+  // Разметка для счётчика
   const html = amount ? `<span>${amount}</span>` : ``
 
-  if (cartBtn.querySelector('span')) {
-    cartBtn.querySelector('span').remove()
-    cartBtn.insertAdjacentHTML('beforeend', html)
-  } else {
-    cartBtn.insertAdjacentHTML('beforeend', html)
-  }
+  // Если счётчик есть, то обновляем значение
+  cartBtn.querySelector('span')?.remove()
+  cartBtn.insertAdjacentHTML('beforeend', html)
 }
 
-const renderBasket = productBasket => {
-  productList.innerHTML = ''
-  productBasket.forEach(p =>
-    productList.insertAdjacentHTML('beforeend', getHTML(p))
-  )
-  cartCounter(productBasket)
-  removeProductFromBasket()
-}
-
-const startApp = async url => {
-  const product = await fetchData(url)
-
-  addProductToBasket(product)
-
-  await renderBasket(productBasket)
-}
-
-renderBasket(productBasket)
-
-logo.addEventListener('click', e => {
+// * Активация промокода
+promocodeBtn.addEventListener('click', e => {
   e.preventDefault()
-  startApp(`https://fakestoreapi.com/products/${randomInt(3, 5)}`)
+
+  // Кодовое слово
+  const codeWord = 'sale'
+
+  // Если корзина пустая, то ничего не делаем
+  if (!productBasket.length) return
+
+  // Если значение совпало, применяем скидку
+  if (promocodeInput.value === codeWord) {
+    discount = 0.5
+
+    // Обновляем счёт
+    updateBasketBill()
+
+    // Добавляем ярлычок
+    basketBill
+      .querySelector('.bill__total')
+      .insertAdjacentHTML(
+        'beforeend',
+        `<div class="bill__discount">$${total.toFixed(2)}</div>`
+      )
+
+    // Возвращаем значение на случай, если будут добавляться новые товары
+    discount = 1
+  }
 })
 
-// const productsList = document.querySelector('.products__list')
-// productsInBasket.forEach(product => {
-//   productsList.insertAdjacentHTML('beforeend', getHTML(product))
-// })
+// * Обновление корзины
+const updateBasket = () => {
+  productList.innerHTML = ''
+  productBasket.forEach(p =>
+    productList.insertAdjacentHTML('beforeend', getProductHTML(p))
+  )
 
-// console.log(productsInBasket)
+  // Инициализируем новые кнопки
+  cartCounterUpdate()
+  removeProductFromBasket()
+  changeAmountOfProduct()
 
-// deleteProductBtns.forEach(btn =>
-//   btn.addEventListener('click', function (e) {
-//     e.preventDefault()
-//     console.log(this)
-//   })
-// )
+  // Обновляем счёт
+  updateBasketBill()
+}
+
+// * Получение случайного продукта с сервера
+const getRandomProduct = async url => {
+  const product = await fetchData(url)
+  addProductToBasket(product)
+}
+
+// * Заполняем корзину двумя дефолтными товарами
+updateBasket()
+
+// * Получение слуйчайного числа
+const randomInt = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+// * По нажатию на логотип добавляем в корзину новый продукт
+logo.addEventListener('click', e => {
+  e.preventDefault()
+  getRandomProduct(`https://fakestoreapi.com/products/${randomInt(3, 20)}`)
+})
