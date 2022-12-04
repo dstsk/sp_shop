@@ -10,7 +10,7 @@ body.classList.add(`${isTouchScreen ? '_mobile' : '_pc'}`)
  *                        * Basket: open / close
  *========================================================================**/
 
-const cartBtn = document.querySelector('.cart')
+const cartBtn = document.querySelector('.cart-btn')
 const basket = document.querySelector('.basket')
 
 let widthOfScreen
@@ -33,7 +33,8 @@ cartBtn.addEventListener('click', e => {
 
 const logo = document.querySelector('.logo')
 const nav = document.querySelector('.nav')
-const burgerBtn = document.querySelector('.burger')
+const burgerBtn = document.querySelector('.burger-btn')
+console.log(burgerBtn)
 burgerBtn.addEventListener('click', e => {
   e.preventDefault()
   nav.classList.toggle('active')

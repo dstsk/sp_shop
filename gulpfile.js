@@ -23,10 +23,15 @@ gulp.task('script', function () {
     .src([
       'node_modules/ismobilejs/dist/isMobile.min.js',
       'node_modules/imask/dist/imask.min.js',
-      // 'node_modules/inputmask/dist/inputmask.min.js',
-      // 'node_modules/slick-carousel/slick/slick.js',
     ])
     .pipe(concat('libs.min.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('app/js'))
+})
+gulp.task('mainScript', function () {
+  return gulp
+    .src('app/js/main.js')
+    .pipe(concat('main.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('app/js'))
 })
@@ -71,8 +76,9 @@ gulp.task('watch', function () {
 gulp.task(
   'default',
   gulp.parallel('style',
-   'script',
+    'script',
+    'mainScript',
     'sass',
-     'watch',
-      'browser-sync')
+    'watch',
+    'browser-sync')
 )

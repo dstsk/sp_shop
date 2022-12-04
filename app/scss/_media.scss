@@ -1,0 +1,346 @@
+@media (max-width: 1639px) {
+  .payment-page__box {
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 1220px) {
+  .pagination {
+    &__item--checked + .pagination__item--checked {
+      ::after {
+        width: 160px;
+      }
+    }
+    &__item--checked {
+      ::before {
+        width: 160px;
+      }
+    }
+    &__item--active {
+      ::before {
+        width: 160px;
+      }
+      ::after {
+        width: 160px;
+      }
+    }
+    &__item--unchecked {
+      ::after {
+        width: 160px;
+      }
+    }
+  }
+}
+
+@media (max-width: 1199px) {
+  .header {
+    z-index: 2;
+  }
+  .nav {
+    z-index: 2;
+  }
+  .logo {
+    z-index: 11;
+  }
+  .basket {
+    position: fixed;
+    top: 80px;
+    right: -100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    border-left: none;
+    overflow-y: auto;
+    transition: right 0.5s;
+  }
+  .basket.active {
+    right: 0;
+    padding: 80px 0 0;
+    transform: translate(0, -80px);
+    z-index: 1;
+  }
+  .basket__products {
+    border-bottom: none;
+  }
+  .basket__title {
+    text-align: center;
+    margin: 0 auto 30px;
+    max-width: max-content;
+  }
+  .products__item {
+    justify-content: space-between;
+  }
+  button.products__delete {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 999px) {
+  .burger-btn {
+    display: block;
+    z-index: 11;
+    svg {
+      position: relative;
+      rect {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: all 0.5s;
+      }
+    }
+  }
+  .burger-btn.active {
+    &::before {
+      top: 50%;
+      transform: rotate(-45deg) translate(0px, -50%);
+    }
+    span {
+      transform: scale(0) translate(0px, -50%);
+    }
+    &::after {
+      bottom: 50%;
+      transform: rotate(45deg) translate(0px, 50%);
+    }
+    rect {
+      fill: #fff;
+      stroke: #fff;
+    }
+  }
+  .nav {
+    background-color: #000;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    opacity: 0.85;
+    transition: left 0.5s;
+    ul {
+      overflow: auto;
+      &::before {
+        transition: left 0.5s;
+        content: '';
+        position: fixed;
+        height: 80px;
+        width: 100%;
+        background-color: #d5d5d5;
+        top: 0;
+        left: -100%;
+      }
+    }
+  }
+  .nav.active {
+    left: 0;
+    ul {
+      &::before {
+        content: '';
+        position: fixed;
+        height: 80px;
+        width: 100%;
+        background-color: #d5d5d5;
+        top: 0;
+        left: 0;
+      }
+    }
+  }
+  .nav__list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    padding: 80px 0 0 0;
+    height: 100%;
+    gap: 0;
+    li {
+      width: 100%;
+      text-align: center;
+    }
+    a {
+      color: #fff;
+      font-size: 22px;
+      line-height: 75px;
+      display: inline-block;
+      width: 100%;
+      transition: all 0.2s;
+      :hover {
+        color: #fff;
+      }
+    }
+    :first-child a {
+      padding-top: 15px;
+    }
+  }
+  .basket__products {
+    border-bottom: none;
+  }
+}
+
+@media (max-width: 829px) {
+  .basket {
+    display: block;
+  }
+  .basket__products {
+    border-bottom: 1px solid #cfcfcf;
+  }
+  .products__item {
+    margin: 0 auto 20px;
+    max-width: 330px;
+  }
+  .promocode-field__form {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  .bill {
+    max-width: 380px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .pagination {
+    &__item--checked + .pagination__item--checked {
+      ::after {
+        width: 88px;
+      }
+    }
+    &__item--checked {
+      ::before {
+        width: 88px;
+      }
+    }
+    &__item--active {
+      ::before {
+        width: 88px;
+      }
+      ::after {
+        width: 88px;
+      }
+    }
+    &__item--unchecked {
+      ::after {
+        width: 88px;
+      }
+    }
+  }
+}
+
+@media (max-width: 680px) {
+  .main__left {
+    padding: 65px 65px 30px 35px;
+    border-right: none;
+  }
+  .pagination {
+    margin-bottom: 40px;
+  }
+  .payment-page__title {
+    margin-bottom: 25px;
+  }
+  .payment-method {
+    flex-wrap: wrap;
+    font-size: 12px;
+    gap: 40px;
+    img {
+      height: 22px;
+    }
+  }
+  .card-form__number-wrapper {
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .card-form__number-input {
+    max-width: 100px;
+    flex: 1 1 auto;
+  }
+  .card-form__footer {
+    gap: 20px;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 539px) {
+  .pagination {
+    display: none;
+  }
+  .main__wrapper {
+    padding-right: 30px;
+  }
+  .main__left {
+    padding: 25px 0;
+  }
+  .payment-method {
+    margin-bottom: 25px;
+    gap: 14px;
+  }
+  .payment-form__tile {
+    padding: 15px 25px 15px;
+    margin-bottom: 20px;
+  }
+  .payment-form__row {
+    margin-bottom: 10px;
+  }
+  .card-form__checkboxes {
+    margin-bottom: 20px;
+  }
+  .search-form {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 50%;
+    height: 99%;
+    &__input {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      right: 3%;
+      bottom: 0;
+      z-index: 12;
+      border: none;
+      padding: 0 50px 0 5px;
+    }
+    &__icon {
+      position: absolute;
+      right: 134px;
+      z-index: 9;
+    }
+    &__icon--active {
+      position: absolute;
+      right: 40px;
+      bottom: 50%;
+      z-index: 13;
+      width: 22px;
+      height: 25px;
+      transform: translate(0, 50%);
+    }
+  }
+}
+
+@media (max-width: 417px) {
+  .payment-page__title,
+  .payment-method,
+  .card-form__checkboxes {
+    padding: 0 10px;
+  }
+  .card-form__number-input {
+    letter-spacing: 0px;
+  }
+  .products {
+    padding: 20px 15px;
+  }
+  .products__img {
+    margin-right: 12px;
+  }
+  img.products__img {
+    width: 85px;
+    height: 85px;
+  }
+  .promocode-field {
+    padding: 20px 15px;
+  }
+  .bill {
+    padding: 25px 30px 10px;
+  }
+}
